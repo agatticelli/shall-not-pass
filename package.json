@@ -1,0 +1,38 @@
+{
+  "name": "shall-not-pass",
+  "version": "1.0.0",
+  "description": "Validation module for NodeJS.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel src -d dist/",
+    "prebuild": "rm -rf dist/ && npm test",
+    "prepublish": "npm run build",
+    "test": "mocha --require @babel/register tests/**"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agatticelli/shall-not-pass.git"
+  },
+  "keywords": [
+    "shall-not-pass",
+    "validation",
+    "nodejs",
+    "node",
+    "express",
+    "validator"
+  ],
+  "author": "Alan Gatticelli <agatticelli@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/agatticelli/shall-not-pass/issues"
+  },
+  "homepage": "https://github.com/agatticelli/shall-not-pass#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/register": "^7.4.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.3"
+  }
+}
