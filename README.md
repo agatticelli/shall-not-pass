@@ -1,2 +1,2 @@
-# shall-not-pass
-Validation module for NodeJS
+# dynamite
+Validation module for NodeJS.
