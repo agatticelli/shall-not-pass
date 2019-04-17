@@ -3,7 +3,7 @@ import * as helpers from './helpers';
 
 export default function validate(data, validations) {
   return Object.entries(validations).reduce((errors, [attribute, rulesToValidate]) => {
-    const ruleParser = /(\w+)(?::(.*))?/g;
+    const ruleParser = /(\w+)(?::([^|]*))?/g;
     let match;
     while (match = ruleParser.exec(rulesToValidate)) {
       const [, rule, params = ""] = match;
