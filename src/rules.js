@@ -11,7 +11,7 @@ const validateArray = (attribute, value) => types.isArray(value);
 const validateBetween = (attribute, value, params) => {
   const size = helpers.getSize(value);
 
-  return params[0] <= size && params[1] >= size;
+  return Number(params[0]) <= size && Number(params[1]) >= size;
 };
 
 const validateBoolean = (attribute, value) => types.isBoolean(value) || [0, 1, 'false', 'true'].includes(value);
@@ -24,9 +24,9 @@ const validateIn = (attribute, value, params) => Array.from(params).includes(val
 
 const validateNumeric = (attribute, value) => types.isNumeric(value);
 
-const validateMax = (attribute, value, params) => helpers.getSize(value) <= params[0];
+const validateMax = (attribute, value, params) => helpers.getSize(value) <= Number(params[0]);
 
-const validateMin = (attribute, value, params) => helpers.getSize(value) >= params[0];
+const validateMin = (attribute, value, params) => helpers.getSize(value) >= Number(params[0]);
 
 const validateNotIn = (attribute, value, params) => !validateIn(attribute, value, params);
 
@@ -36,7 +36,7 @@ const validateRequired = (attribute, value) => (
   && !(types.isArray(value) && helpers.getSize(value) === 0)
 );
 
-const validateSize = (attribute, value, params) => helpers.getSize(value) === params[0];
+const validateSize = (attribute, value, params) => helpers.getSize(value) === Number(params[0]);
 
 const validateString = (attribute, value) => types.isString(value);
 
