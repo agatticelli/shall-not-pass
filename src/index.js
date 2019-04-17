@@ -3,6 +3,12 @@ import * as helpers from './helpers';
 import * as types from './types';
 
 export default class Gandalf {
+  static ruleParser = /(\w+)(?::([^|]*))?/g;
+  static addCustomRule(rule, callback) {
+    const fullRuleName = helpers.snakeToCamel(`validate_${rule}`);
+    rules[fullRuleName] = callback;
+  }
+
   constructor(data, rules) {
     this.data = data;
     this.rules = rules;
@@ -13,10 +19,9 @@ export default class Gandalf {
 
   validate() {
     return Object.entries(this.rules).reduce((errors, [attribute, rulesToValidate]) => {
-      const ruleParser = /(\w+)(?::([^|]*))?/g;
       let match;
       this.rulesFound[attribute] = {};
-      while (match = ruleParser.exec(rulesToValidate)) {
+      while (match = Gandalf.ruleParser.exec(rulesToValidate)) {
         const [, rule, params = ""] = match;
         const fullRuleName = helpers.snakeToCamel(`validate_${rule}`);
         this.rulesFound[attribute][fullRuleName] = {
@@ -26,7 +31,10 @@ export default class Gandalf {
       }
 
       Object.entries(this.rulesFound[attribute]).forEach(([rule, extra]) => {
-        if (this.isValiditable(extra.originalRuleName, attribute)) {
+        const isValidatable = this.siValidatable(extra.originalRuleName, attribute);
+        // const isCustomRule = this.isCustomRule(extra.originalRuleName);
+
+        if (isValidatable) {
           if (!rules[rule].call(null, attribute, this.data[attribute], extra.params)) {
             errors[attribute] || (errors[attribute] = {});
             errors[attribute][extra.originalRuleName] = 'Failed';
@@ -46,7 +54,7 @@ export default class Gandalf {
     this.errors = this.validate();
   }
 
-  isValiditable(rule, attribute) {
+  siValidatable(rule, attribute) {
     return (
       this.presentOrRuleIsImplicit(rule, attribute)
       && this.isNotNullIfMarkedAsNullable(rule, attribute)
@@ -84,5 +92,9 @@ export default class Gandalf {
     ).some(
       ([, extra]) => rule === extra.originalRuleName
     );
+  }
+
+  isValid() {
+    return Object.keys(this.errors).length === 0;
   }
 }
