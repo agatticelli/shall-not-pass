@@ -12,6 +12,17 @@ describe('Test validate function', () => {
     expect(gandalf.errors).to.be.empty;
   });
 
+  it('should checks isValid function', () => {
+    const data = { email: 'usertest@.org' };
+    const gandalf = new Gandalf(data, {
+      email: 'email',
+    });
+    expect(gandalf.isValid()).to.be.false;
+
+    gandalf.revalidate({ data: { email: 'usertest@example.org' } });
+    expect(gandalf.isValid()).to.be.true;
+  });
+
   it('should validate required|email with fail', () => {
     const data = { email: 'stringquenoesunmail' };
     const gandalf = new Gandalf(data, {
@@ -74,5 +85,18 @@ describe('Test validate function', () => {
       }
     });
     expect(gandalf.errors).to.be.empty;
+  });
+
+  it('should validate custom rule', () => {
+    Gandalf.addCustomRule('in_list', function(attribute, value, params) {
+      expect(attribute).to.be.equal('userId');
+      expect(value).to.be.equal(113);
+      expect(params).to.eql(['1', '10', '113', '1000']);
+    });
+
+    const gandalf = new Gandalf({ userId: 113 }, {
+      userId: 'numeric|in_list:1,10,113,1000',
+    });
+
   });
 });
