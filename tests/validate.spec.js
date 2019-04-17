@@ -35,4 +35,18 @@ describe('Test validate function', () => {
     expect(errors['email']).to.haveOwnProperty('email');
     expect(errors['email']).to.haveOwnProperty('required');
   });
+
+  it('should validate between', () => {
+    const data = { name: 'Dexter Morgan' };
+    let errors = validate(data, {
+      name: 'required|between:5,25|string',
+    });
+    expect(errors).to.be.empty;
+
+    errors = validate(data, {
+      name: 'required|between:5,10|string',
+    });
+    expect(errors).to.have.keys(['name']);
+    expect(errors['name']).to.have.keys(['between']);
+  });
 });
