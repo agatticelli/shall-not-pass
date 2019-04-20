@@ -17,7 +17,8 @@ export default class Gandalf {
   async validate() {
     this.rulesFound = {};
     const rulesEntries = Object.entries(this.rules);
-    this.errors = await rulesEntries.reduce(async (errors, [attribute, rulesToValidate]) => {
+    this.errors = await rulesEntries.reduce(async (prevErrors, [attribute, rulesToValidate]) => {
+      const errors = await prevErrors;
       let match;
       this.rulesFound[attribute] = {};
       while (match = Gandalf.ruleParser.exec(rulesToValidate)) {
@@ -47,7 +48,7 @@ export default class Gandalf {
       }));
 
       return errors;
-    }, {});
+    }, Promise.resolve({}));
 
     return this.isValid();
   }
