@@ -12,13 +12,12 @@ export default class Gandalf {
   constructor(data, rules) {
     this.data = data;
     this.rules = rules;
-
-    this.rulesFound = {};
-    this.errors = this.validate();
   }
 
-  validate() {
-    return Object.entries(this.rules).reduce((errors, [attribute, rulesToValidate]) => {
+  async validate() {
+    this.rulesFound = {};
+    const rulesEntries = Object.entries(this.rules);
+    this.errors = await rulesEntries.reduce(async (errors, [attribute, rulesToValidate]) => {
       let match;
       this.rulesFound[attribute] = {};
       while (match = Gandalf.ruleParser.exec(rulesToValidate)) {
@@ -30,31 +29,37 @@ export default class Gandalf {
         };
       }
 
-      Object.entries(this.rulesFound[attribute]).forEach(([rule, extra]) => {
-        const isValidatable = this.siValidatable(extra.originalRuleName, attribute);
-        // const isCustomRule = this.isCustomRule(extra.originalRuleName);
+      const rulesFoundEntries = Object.entries(this.rulesFound[attribute]);
+
+      await Promise.all(rulesFoundEntries.map(async ([rule, extra]) => {
+        const isValidatable = this.isValidatable(extra.originalRuleName, attribute);
 
         if (isValidatable) {
-          if (!rules[rule].call(null, attribute, this.data[attribute], extra.params)) {
+          const passes = await rules[rule].call(
+            this, attribute, this.data[attribute], extra.params
+          );
+
+          if (!passes) {
             errors[attribute] || (errors[attribute] = {});
             errors[attribute][extra.originalRuleName] = 'Failed';
           }
         }
-      });
+      }));
 
       return errors;
     }, {});
+
+    return this.isValid();
   }
 
   revalidate(changes) {
     changes.data && (this.data = changes.data);
     changes.rules && (this.rules = changes.rules);
 
-    this.rulesFound = {};
-    this.errors = this.validate();
+    return this.validate();
   }
 
-  siValidatable(rule, attribute) {
+  isValidatable(rule, attribute) {
     return (
       this.presentOrRuleIsImplicit(rule, attribute)
       && this.isNotNullIfMarkedAsNullable(rule, attribute)
@@ -85,7 +90,6 @@ export default class Gandalf {
     if (!this.rulesFound[attribute]) {
       return false;
     }
-
 
     return Object.entries(
       this.rulesFound[attribute]
