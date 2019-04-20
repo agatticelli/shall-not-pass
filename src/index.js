@@ -1,3 +1,5 @@
+import '@babel/polyfill';
+
 import * as rules from './rules';
 import * as helpers from './helpers';
 import * as types from './types';
