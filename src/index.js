@@ -1,17 +1,30 @@
-import * as rules from './rules';
 import * as helpers from './helpers';
+import MessageParser from './messages';
+import * as rules from './rules';
 import * as types from './types';
 
 export default class Gandalf {
   static ruleParser = /(\w+)(?::([^|]*))?/g;
+  static fallbackLanguage = 'en';
+  static fallbackMessagesPath = '../resources';
+
   static addCustomRule(rule, callback) {
     const fullRuleName = helpers.snakeToCamel(`validate_${rule}`);
     rules[fullRuleName] = callback;
   }
 
-  constructor(data, rules) {
+  constructor(data, rules, options = {}) {
     this.data = data;
     this.rules = rules;
+
+    const language = options.language || Gandalf.fallbackLanguage;
+    const messagesPath = options.messagesPath || Gandalf.fallbackMessagesPath;
+
+    this.messageParser = new MessageParser(language, Gandalf.fallbackMessagesPath);
+
+    if (messagesPath != Gandalf.fallbackMessagesPath) {
+      this.messageParser.load(messagesPath);
+    }
   }
 
   async validate() {
@@ -22,10 +35,15 @@ export default class Gandalf {
       let match;
       this.rulesFound[attribute] = {};
       while (match = Gandalf.ruleParser.exec(rulesToValidate)) {
-        const [, rule, params = ""] = match;
+        let [, rule, params] = match;
+        if (params) {
+          params = params.split(',').map(i => i.trim());
+        } else {
+          params = [];
+        }
         const fullRuleName = helpers.snakeToCamel(`validate_${rule}`);
         this.rulesFound[attribute][fullRuleName] = {
-          params: params.split(',').map(i => i.trim()),
+          params: params,
           originalRuleName: rule,
         };
       }
@@ -42,7 +60,11 @@ export default class Gandalf {
 
           if (!passes) {
             errors[attribute] || (errors[attribute] = {});
-            errors[attribute][extra.originalRuleName] = 'Failed';
+            errors[attribute][extra.originalRuleName] = this.messageParser.parse(
+              extra.originalRuleName,
+              attribute,
+              extra.params,
+            );
           }
         }
       }));
