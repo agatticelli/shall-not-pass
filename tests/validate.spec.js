@@ -108,6 +108,8 @@ describe('Test validate function', () => {
 
     const gandalf = new Gandalf({ userId: 113 }, {
       userId: 'numeric|in_list:1,10,113,1000',
+    }, {
+      messagesPath: '../resources/custom',
     });
 
     await gandalf.validate();
@@ -122,11 +124,27 @@ describe('Test validate function', () => {
 
     const gandalf = new Gandalf({ userId: 113 }, {
       userId: 'is_five',
+    }, {
+      messagesPath: '../resources/custom',
     });
     await gandalf.validate();
     expect(gandalf.errors).to.not.be.empty;
 
     await gandalf.revalidate({ data: { userId: 5 } });
     expect(gandalf.errors).to.be.empty;
+  });
+
+  it('should validate another language', async () => {
+    const data = { description: 3 };
+    const gandalf = new Gandalf(data, {
+      description: 'string',
+    }, {
+      language: 'es'
+    });
+
+    await gandalf.validate();
+
+    expect(gandalf.errors).to.not.be.empty;
+    expect(gandalf.errors.description.string).to.be.equal('El campo description debe ser texto');
   });
 });
