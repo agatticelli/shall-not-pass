@@ -2,6 +2,8 @@ import { expect } from 'chai';
 
 import Gandalf from '../src';
 
+Gandalf.addMessagesPath('../resources/custom');
+
 describe('Test validate function', () => {
   it('should validate required|email with success', async () => {
     const data = { email: 'usertest@example.org' };
@@ -108,8 +110,6 @@ describe('Test validate function', () => {
 
     const gandalf = new Gandalf({ userId: 113 }, {
       userId: 'numeric|in_list:1,10,113,1000',
-    }, {
-      messagesPath: '../resources/custom',
     });
 
     await gandalf.validate();
@@ -124,8 +124,6 @@ describe('Test validate function', () => {
 
     const gandalf = new Gandalf({ userId: 113 }, {
       userId: 'is_five',
-    }, {
-      messagesPath: '../resources/custom',
     });
     await gandalf.validate();
     expect(gandalf.errors).to.not.be.empty;
