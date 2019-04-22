@@ -7,10 +7,15 @@ export default class Gandalf {
   static ruleParser = /(\w+)(?::([^|]*))?/g;
   static fallbackLanguage = 'en';
   static fallbackMessagesPath = '../resources';
+  static messagesPaths = [];
 
   static addCustomRule(rule, callback) {
     const fullRuleName = helpers.snakeToCamel(`validate_${rule}`);
     rules[fullRuleName] = callback;
+  }
+
+  static addMessagesPath(messagesPath) {
+    Gandalf.messagesPaths.push(messagesPath);
   }
 
   constructor(data, rules, options = {}) {
@@ -18,13 +23,12 @@ export default class Gandalf {
     this.rules = rules;
 
     const language = options.language || Gandalf.fallbackLanguage;
-    const messagesPath = options.messagesPath || Gandalf.fallbackMessagesPath;
 
     this.messageParser = new MessageParser(language, Gandalf.fallbackMessagesPath);
 
-    if (messagesPath != Gandalf.fallbackMessagesPath) {
+    Gandalf.messagesPaths.forEach(messagesPath => {
       this.messageParser.load(messagesPath);
-    }
+    })
   }
 
   async validate() {

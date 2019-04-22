@@ -11,7 +11,9 @@ export default class MessageParser {
   }
 
   load(messagesPath) {
-    this.messages = Object.assign(this.messages, require(path.join(messagesPath, this.language)))
+    try {
+      this.messages = Object.assign(this.messages, require(path.join(messagesPath, this.language)))
+    } catch {}
   }
 
   parse(rule, attribute, params, customMessage) {
