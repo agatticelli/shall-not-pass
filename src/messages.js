@@ -18,7 +18,7 @@ export default class MessageParser {
     let message = customMessage || this.messages[rule];
     message = message.replace(':attribute', attribute);
 
-    const argsRegex = /(:\w+)/gm;
+    const argsRegex = /(:(?:\.\.\.)?\w+)/gm;
     const matches = [];
 
     let match;
@@ -27,13 +27,14 @@ export default class MessageParser {
     }
 
     if (params.length) {
-      if (matches.length === params.length) {
-        matches.forEach((match, idx) => {
-          message = message.replace(match[1], params[idx]);
-        });
-      } else {
-        message = message.replace(matches[0][1], params.join(','));
-      }
+      matches.forEach(match => {
+        if (match[1].startsWith(':...')) {
+          message = message.replace(match[1], params.join(','));
+        } else {
+          const currentParam = params.shift();
+          message = message.replace(match[1], currentParam);
+        }
+      });
     }
 
     return message;
