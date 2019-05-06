@@ -26,9 +26,9 @@ export default class Gandalf {
 
     this.messageParser = new MessageParser(language, Gandalf.fallbackMessagesPath);
 
-    Gandalf.messagesPaths.forEach(messagesPath => {
-      this.messageParser.load(messagesPath);
-    })
+    Gandalf.messagesPaths.forEach(messagesPath => (
+      this.messageParser.load(messagesPath)
+    ));
   }
 
   async validate() {
