@@ -1,19 +1,29 @@
+import * as fs from 'fs';
 import * as path from 'path';
 
 export default class MessageParser {
   constructor(language, messagesPath) {
     this.language = language;
-    try {
-      this.messages = require(path.join(messagesPath, language));
-    } catch (err) {
-      this.messages = {};
-    }
+    this.messages = this.readMessagesFile(path.join(messagesPath, `${language}.json`));
   }
 
   load(messagesPath) {
+    const newMessages = this.readMessagesFile(
+      path.join(messagesPath, `${this.language}.json`)
+    );
+
+    this.messages = Object.assign(this.messages, newMessages);
+  }
+
+  readMessagesFile(path) {
+    let messages;
     try {
-      this.messages = Object.assign(this.messages, require(path.join(messagesPath, this.language)))
-    } catch {}
+      messages = JSON.parse(fs.readFileSync(path));
+    } catch {
+      messages = {};
+    }
+
+    return messages;
   }
 
   parse(rule, attribute, params, customMessage) {
