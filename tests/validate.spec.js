@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import Gandalf from '../src';
 
-Gandalf.addMessagesPath('../resources/custom');
+Gandalf.addMessagesPath('./resources/custom');
 
 describe('Test validate function', () => {
   it('should validate required|email with success', async () => {

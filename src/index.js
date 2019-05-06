@@ -6,7 +6,7 @@ import * as types from './types';
 export default class Gandalf {
   static ruleParser = /(\w+)(?::([^|]*))?/g;
   static fallbackLanguage = 'en';
-  static fallbackMessagesPath = '../resources';
+  static fallbackMessagesPath = './resources';
   static messagesPaths = [];
 
   static addCustomRule(rule, callback) {
