@@ -5,30 +5,23 @@ import * as types from './types';
 
 export default class Gandalf {
   static ruleParser = /(\w+)(?::([^|]*))?/g;
-  static fallbackLanguage = 'en';
-  static fallbackMessagesPath = './resources';
-  static messagesPaths = [];
 
   static addCustomRule(rule, callback) {
     const fullRuleName = helpers.snakeToCamel(`validate_${rule}`);
     rules[fullRuleName] = callback;
   }
 
-  static addMessagesPath(messagesPath) {
-    Gandalf.messagesPaths.push(messagesPath);
+  static async addMessagesPath(messagesPath, language) {
+    const messages = await import(messagesPath);
+
+    MessageParser.addMessages(messages, language);
   }
 
   constructor(data, rules, options = {}) {
     this.data = data;
     this.rules = rules;
 
-    const language = options.language || Gandalf.fallbackLanguage;
-
-    this.messageParser = new MessageParser(language, Gandalf.fallbackMessagesPath);
-
-    Gandalf.messagesPaths.forEach(messagesPath => (
-      this.messageParser.load(messagesPath)
-    ));
+    this.messageParser = new MessageParser(options.language);
   }
 
   async validate() {

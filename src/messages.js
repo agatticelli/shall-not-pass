@@ -1,33 +1,20 @@
-import * as fs from 'fs';
-import * as path from 'path';
-
 export default class MessageParser {
-  constructor(language, messagesPath) {
-    this.language = language;
-    this.messages = this.readMessagesFile(path.join(messagesPath, `${language}.json`));
+  static defaultLanguage = 'en';
+  static messages = {};
+
+  static addMessages(messages, language) {
+    const lang = language || MessageParser.defaultLanguage;
+
+    MessageParser.messages[lang] || (MessageParser.messages[lang] = {});
+    Object.assign(MessageParser.messages[lang], messages);
   }
 
-  load(messagesPath) {
-    const newMessages = this.readMessagesFile(
-      path.join(messagesPath, `${this.language}.json`)
-    );
-
-    this.messages = Object.assign(this.messages, newMessages);
-  }
-
-  readMessagesFile(path) {
-    let messages;
-    try {
-      messages = JSON.parse(fs.readFileSync(path));
-    } catch {
-      messages = {};
-    }
-
-    return messages;
+  constructor(language) {
+    this.language = language || MessageParser.defaultLanguage;
   }
 
   parse(rule, attribute, params, customMessage) {
-    let message = customMessage || this.messages[rule];
+    let message = customMessage || MessageParser.messages[this.language][rule];
     message = message.replace(':attribute', attribute);
 
     const argsRegex = /(:(?:\.\.\.)?\w+)/gm;
@@ -52,3 +39,8 @@ export default class MessageParser {
     return message;
   }
 }
+
+import defaultMessages from '../resources';
+Object.entries(defaultMessages).forEach(([language, messages]) => {
+  MessageParser.addMessages(messages, language);
+});
