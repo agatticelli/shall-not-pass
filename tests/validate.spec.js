@@ -2,9 +2,10 @@ import { expect } from 'chai';
 
 import Gandalf from '../src';
 
-Gandalf.addMessagesPath('./resources/custom');
 
 describe('Test validate function', () => {
+  before(() => Gandalf.addMessagesPath('../resources/custom/en'));
+
   it('should validate required|email with success', async () => {
     const data = { email: 'usertest@example.org' };
     const gandalf = new Gandalf(data, {
