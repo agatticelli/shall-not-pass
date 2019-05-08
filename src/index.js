@@ -11,9 +11,7 @@ export default class Gandalf {
     rules[fullRuleName] = callback;
   }
 
-  static async addMessagesPath(messagesPath, language) {
-    const messages = await import(messagesPath);
-
+  static addMessages(messages, language) {
     MessageParser.addMessages(messages, language);
   }
 
