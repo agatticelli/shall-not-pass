@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import Gandalf from '../src';
 
-import customEn from './custom/en';
+import customEn from './custom/english';
 
 describe('Test validate function', () => {
   before(() => Gandalf.addMessages(customEn));
