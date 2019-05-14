@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import * as helpers from './helpers';
 import MessageParser from './messages';
 import * as rules from './rules';
@@ -120,3 +121,4 @@ export default class Gandalf {
     return Object.keys(this.errors).length === 0;
   }
 }
+
