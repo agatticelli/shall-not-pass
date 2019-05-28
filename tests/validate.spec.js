@@ -147,4 +147,24 @@ describe('Test validate function', () => {
     expect(gandalf.errors).to.not.be.empty;
     expect(gandalf.errors.description.string).to.be.equal('El campo description debe ser texto');
   });
+
+  it('should validate regex rule', async () => {
+    const data = { spell: "I solemnly swear that i am up to no good" };
+    const gandalf = new Gandalf(data, {
+      spell: 'required|regex:^[a-z\\s]+$',
+    });
+
+    await gandalf.validate();
+
+    expect(gandalf.errors).to.not.be.empty;
+    expect(gandalf.errors.spell.regex).to.be.equal('The field spell must match the following format ^[a-z\\s]+$');
+
+    await gandalf.revalidate({
+      rules: {
+        spell: 'required|regex:^[a-zA-Z\\s]+$',
+      }
+    });
+
+    expect(gandalf.errors).to.be.empty;
+  });
 });
