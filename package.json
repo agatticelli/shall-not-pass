@@ -1,6 +1,6 @@
 {
   "name": "shall-not-pass",
-  "version": "8.1.0",
+  "version": "8.1.1",
   "description": "Validation module for NodeJS.",
   "main": "dist/index.js",
   "scripts": {
