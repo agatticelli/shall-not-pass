@@ -13,5 +13,7 @@ module.exports = {
   "not_in": "The field :attribute must not be one of the following :...list",
   "required": "The field :attribute must be present and not null",
   "size": "The field :attribute should have :size size",
-  "string": "The field :attribute must be a string"
+  "string": "The field :attribute must be a string",
+  "regex": "The field :attribute must match the following format :regex",
+  "not_regex": "El campo :attribute must not match the following format :regex",
 }
