@@ -1,8 +1,10 @@
+import * as regex from './regex';
+
 const isArray = value => Array.isArray(value);
 const isBoolean = value => typeof (value) === 'boolean';
 const isDate = value => value instanceof Date;
 const isNull = value => value === null || value === void 0;
-const isNumeric = value => Number.isFinite(value);
+const isNumeric = value => Number.isFinite(value) || regex.numeric.test(value);
 const isString = value => typeof value === 'string' || value instanceof String;
 
 export {
