@@ -35,7 +35,15 @@ describe('Test numeric rule', () => {
     expect(validateNumeric('', 10.5)).to.be.true;
   });
 
-  it('should validate with number string', () => {
-    expect(validateNumeric('', '10')).to.be.false;
+  it('should validate with string number', () => {
+    expect(validateNumeric('', '10')).to.be.true;
+  });
+
+  it('should validate with string float', () => {
+    expect(validateNumeric('', '10.2')).to.be.true;
+  });
+
+  it('should validate with wrong string number', () => {
+    expect(validateNumeric('', '10.10.0')).to.be.false;
   });
 });
