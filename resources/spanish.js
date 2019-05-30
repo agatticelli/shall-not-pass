@@ -13,5 +13,7 @@ module.exports = {
   "not_in": "El campo :attribute no debe ser uno de los siguientes :...list",
   "required": "El campo :attribute debe estar presente y no nulo",
   "size": "El tamaño del campo :attribute debe ser de :size",
-  "string": "El campo :attribute debe ser texto"
+  "string": "El campo :attribute debe ser texto",
+  "regex": "El campo :attribute debe cumplir con el siguiente formato :format",
+  "not_regex": "El campo :attribute no debe cumplir con el siguiente formato :format",
 }

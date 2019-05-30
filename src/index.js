@@ -31,11 +31,11 @@ export default class Gandalf {
       let match;
       this.rulesFound[attribute] = {};
       while (match = Gandalf.ruleParser.exec(rulesToValidate)) {
-        let [, rule, params] = match;
-        if (params) {
+        let [, rule, params = ""] = match;
+        if (params && !['regex', 'notRegex'].includes(rule)) {
           params = params.split(',').map(i => i.trim());
         } else {
-          params = [];
+          params = [params]
         }
         const fullRuleName = helpers.snakeToCamel(`validate_${rule}`);
         this.rulesFound[attribute][fullRuleName] = {

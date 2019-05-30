@@ -47,6 +47,10 @@ const validateString = (attribute, value) => types.isString(value);
 
 const validateNullable = () => true;
 
+const validateRegex = (attribute, value, params) => (new RegExp(params[0])).test(value);
+
+const validateNotRegex = (attribute, value, params) => !validateRegex(attribute, value, params);
+
 export {
   IMPLICIT_RULES,
   validateAlpha,
@@ -65,4 +69,6 @@ export {
   validateSize,
   validateString,
   validateNullable,
+  validateRegex,
+  validateNotRegex,
 };
