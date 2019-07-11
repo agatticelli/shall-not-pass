@@ -26,4 +26,8 @@ describe('Test date rule', () => {
   it('should validate with Date object', () => {
     expect(validateDate('', new Date())).to.be.true;
   });
+
+  it('should validate with invalid Date object', () => {
+    expect(validateDate('', new Date("Nagini"))).to.be.false;
+  });
 });
