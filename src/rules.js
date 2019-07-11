@@ -21,7 +21,7 @@ const validateBetween = (attribute, value, params) => {
 
 const validateBoolean = (attribute, value) => types.isBoolean(value) || [0, 1, 'false', 'true'].includes(value);
 
-const validateDate = (attribute, value) => types.isDate(value) || (types.isString(value) && regex.date.test(value));
+const validateDate = (attribute, value) => (types.isDate(value) && !isNaN(value)) || (types.isString(value) && regex.date.test(value));
 
 const validateEmail = (attribute, value) => types.isString(value) && regex.email.test(value);
 
