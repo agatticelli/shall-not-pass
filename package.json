@@ -12,8 +12,7 @@
     "version": "git add -A src",
     "postversion": "git push && git push --tags",
     "prepare": "npm run clean && npm run build",
-    "build": "tsc",
-    "prepublishOnly": "npm test && npm run lint"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
