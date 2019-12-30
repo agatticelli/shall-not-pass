@@ -1,5 +1,5 @@
-const en = require('./english');
-const es = require('./spanish');
+import en from './english.json';
+import es from './spanish.json';
 
 export default {
   en,
