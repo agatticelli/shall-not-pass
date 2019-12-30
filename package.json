@@ -8,6 +8,9 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "clean": "rm -rf lib/",
     "test": "nyc --reporter=text --reporter=html mocha -r ts-node/register \"tests/**/*.spec.ts\"",
+    "preversion": "npm run test && npm run lint && npm run format",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags",
     "prepare": "npm run clean && npm run build",
     "build": "tsc",
     "prepublishOnly": "npm test && npm run lint"
