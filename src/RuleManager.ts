@@ -27,7 +27,6 @@ type ValidationValue =
   | Array<ValidationValue>
   | Set<ValidationValue>;
 
-
 const alpha = (attribute: string, value: ValidationValue): boolean => isString(value) && utils.regex.alpha.test(value);
 
 const alphaNumeric = (attribute: string, value: ValidationValue): boolean =>
