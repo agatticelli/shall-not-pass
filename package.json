@@ -2,7 +2,7 @@
   "name": "shall-not-pass",
   "version": "9.0.2",
   "description": "Validation module for NodeJS.",
-  "main": "lib/src/Gandalf.js",
+  "main": "lib/src/index.js",
   "scripts": {
     "lint": "eslint --fix src/ --ext ts",
     "format": "prettier --write \"src/**/*.ts\"",
