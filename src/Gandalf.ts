@@ -1,13 +1,16 @@
-import MessageParser from './MessageParser';
+import { MessageParser, RuleMessage } from './MessageParser';
 import { RuleManager, IMPLICIT_RULES, RuleCallback } from './RuleManager';
 import * as typesChecker from './types-checker';
-import { RuleMessage, ObjectLiteral } from './types';
+
+export type ObjectLiteral = {
+  [key: string]: any;
+};
 
 export type GandalfOptions = {
   language?: string;
 };
 
-type RulesFound = {
+export type RulesFound = {
   [attribute: string]: {
     [ruleName: string]: {
       params: Array<string>;
@@ -15,11 +18,11 @@ type RulesFound = {
   };
 };
 
-type RulesToCheck = {
+export type RulesToCheck = {
   [attribute: string]: string;
 };
 
-type GandalfErrors = {
+export type GandalfErrors = {
   [attribute: string]: {
     [rule: string]: string;
   };

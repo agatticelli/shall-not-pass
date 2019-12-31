@@ -1,5 +1,12 @@
-import { RuleMessage, RuleMessageBag } from './types';
 import defaultMessages from '../resources';
+
+type RuleMessage = {
+  [key: string]: string;
+};
+
+type RuleMessageBag = {
+  [countryCode: string]: RuleMessage;
+};
 
 class MessageParser {
   static defaultLanguage = 'en';
@@ -47,4 +54,4 @@ Object.entries(defaultMessages).forEach(([language, messages]) => {
   MessageParser.addMessages(messages as RuleMessage, language);
 });
 
-export default MessageParser;
+export { MessageParser, RuleMessage, RuleMessageBag };

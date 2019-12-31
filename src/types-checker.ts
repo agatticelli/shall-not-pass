@@ -1,5 +1,5 @@
 import utils from './utils';
-import { ValidationValue } from './types';
+import { ValidationValue } from './RuleManager';
 
 const isArray = (value: ValidationValue): value is [] => Array.isArray(value);
 const isBoolean = (value: ValidationValue): value is boolean => typeof value === 'boolean';

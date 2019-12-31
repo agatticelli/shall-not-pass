@@ -1,6 +1,5 @@
 import { isString, isArray, isDate, isBoolean, isNull, isNumeric } from './types-checker';
 import utils from './utils';
-import { ValidationValue } from './types';
 
 const IMPLICIT_RULES = [
   'required',
@@ -14,6 +13,20 @@ const IMPLICIT_RULES = [
   'accepted',
   'present',
 ];
+
+type ValidationValue =
+  | object
+  | string
+  | number
+  | undefined
+  | null
+  | Date
+  | string
+  | number
+  | boolean
+  | Array<ValidationValue>
+  | Set<ValidationValue>;
+
 
 const alpha = (attribute: string, value: ValidationValue): boolean => isString(value) && utils.regex.alpha.test(value);
 
@@ -122,4 +135,4 @@ class RuleManager {
   }
 }
 
-export { IMPLICIT_RULES, RuleManager, RuleCallback };
+export { IMPLICIT_RULES, RuleManager, RuleCallback, RuleSet, ValidationValue };
