@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { RuleManager } from '../../src/RuleManager';
+import { RuleManager } from '../../src';
 
 const ruleManager = new RuleManager();
 const validateNotInArray = ruleManager.getRule('notInArray');

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import * as typesChecker from '../src/types-checker';
+import * as typesChecker from '../src';
 
 describe('Test types-checker', () => {
   it('should check isArray with valid array', () => {

@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { Gandalf } from '../src/Gandalf';
+import { Gandalf } from '../src';
 import customEn from './custom/english';
 import customEs from './custom/spanish';
 
