@@ -1,5 +1,5 @@
 import { isNumeric, isArray, isString } from './types-checker';
-import { ValidationValue } from './types';
+import { ValidationValue } from './RuleManager';
 
 const getSize = (value: ValidationValue): number => {
   if (isNumeric(value)) {
