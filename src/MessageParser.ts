@@ -37,12 +37,11 @@ class MessageParser {
       matches.push(match);
     }
 
-    matches.forEach(match => {
+    matches.forEach((match, index) => {
       if (match[1].startsWith(':...')) {
         message = message.replace(match[1], params.join(','));
       } else {
-        const currentParam = params[0];
-        message = message.replace(match[1], currentParam);
+        message = message.replace(match[1], params[index]);
       }
     });
 
