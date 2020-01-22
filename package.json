@@ -1,6 +1,6 @@
 {
   "name": "shall-not-pass",
-  "version": "9.0.3",
+  "version": "9.0.4",
   "description": "Validation module for NodeJS.",
   "main": "lib/src/index.js",
   "scripts": {
