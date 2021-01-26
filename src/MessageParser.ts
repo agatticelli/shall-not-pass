@@ -19,7 +19,7 @@ class MessageParser {
     Object.assign(MessageParser.messages[lang], messages);
   }
 
-  private language: string;
+  private readonly language: string;
 
   constructor(language?: string) {
     this.language = language || MessageParser.defaultLanguage;
