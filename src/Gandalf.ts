@@ -2,10 +2,7 @@ import { MessageParser, RuleMessage } from './MessageParser';
 import { RuleManager, IMPLICIT_RULES, RuleCallback } from './RuleManager';
 import * as typesChecker from './types-checker';
 import { ObjectUtils } from './utils';
-
-export type ObjectLiteral = {
-  [key: string]: any;
-};
+import { ObjectLiteral } from "./types";
 
 export type GandalfOptions = {
   language?: string;
