@@ -186,4 +186,17 @@ describe('Test validate function', () => {
 
     expect(gandalf.hasRule('spellName', 'alpha')).to.be.false;
   });
+
+  it('should validate using nested keys', async () => {
+    const data = {
+      address: { streetName: 'Baker Street' },
+    };
+    const gandalf = new Gandalf(data, {
+      'address.streetName': 'required',
+    });
+
+    await gandalf.validate();
+
+    expect(gandalf.errors).to.be.empty;
+  });
 });
