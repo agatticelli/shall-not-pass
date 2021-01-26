@@ -1,6 +1,9 @@
+.idea/
 .vscode/
+
 node_modules/
-/lib/
-/.nyc_output/
-/coverage/
+
+lib/
+.nyc_output/
+coverage/
 .DS_Store
