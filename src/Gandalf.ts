@@ -48,6 +48,7 @@ class Gandalf {
     this.errors = {};
     this.rulesFound = {};
     this.messageParser = new MessageParser(options.language);
+
     this.parseRules();
   }
 
@@ -60,22 +61,24 @@ class Gandalf {
 
     const initialErrors: GandalfErrors = {};
 
-    this.errors = await attributesToCheck.reduce(async (prevErrors, attributesToCheck) => {
+    this.errors = await attributesToCheck.reduce(async (prevErrors, attribute) => {
       const errors = await prevErrors;
-      const rulesFoundEntries = Object.entries(this.rulesFound[attributesToCheck]);
+      const rulesFoundEntries = Object.entries(this.rulesFound[attribute]);
 
       await Promise.all(
         rulesFoundEntries.map(async ([ruleName, extra]) => {
-          const isValidatable = this.isValidatable(ruleName, attributesToCheck);
+
+          // check if ruleName should be validated for this attribute
+          const isValidatable = this.isValidatable(ruleName, attribute);
 
           if (isValidatable) {
             const passes = await Gandalf.ruleManager
               .getRule(ruleName)
-              .call(this, attributesToCheck, this.data[attributesToCheck], extra.params);
+              .call(this, attribute, ObjectUtils.getValue(this.data, attribute), extra.params);
 
             if (!passes) {
-              errors[attributesToCheck] || (errors[attributesToCheck] = {});
-              errors[attributesToCheck][ruleName] = this.messageParser.parse(ruleName, attributesToCheck, extra.params);
+              errors[attribute] || (errors[attribute] = {});
+              errors[attribute][ruleName] = this.messageParser.parse(ruleName, attribute, extra.params);
             }
           }
         }),
@@ -96,22 +99,29 @@ class Gandalf {
     return this.validate();
   }
 
+  // isValidatable checks if ruleName should be validated on specific attribute
   isValidatable(ruleName: string, attribute: string): boolean {
     return this.presentOrRuleIsImplicit(ruleName, attribute) && this.isNotNullIfMarkedAsNullable(ruleName, attribute);
   }
 
+  // presentOrRuleIsImplicit returns true if attribute is present inside input data or if the rule
+  // being evaluated is an implicit one
   presentOrRuleIsImplicit(ruleName: string, attribute: string): boolean {
     return this.validatePresent(attribute) || this.isImplicit(ruleName);
   }
 
+  // isImplicit returns true if current ruleName is an implicit rule
   isImplicit(ruleName: string): boolean {
     return IMPLICIT_RULES.includes(ruleName);
   }
 
+  // validatePresent returns true if attribute is present inside data
   validatePresent(attribute: string): boolean {
     return attribute in this.data;
   }
 
+  // isNotNullIfMarkedAsNullable checks that rule is not implicit and more important if this attribute has a nullable
+  // rule. In such case, if value is null it returns false to avoid validation
   isNotNullIfMarkedAsNullable(ruleName: string, attribute: string): boolean {
     if (this.isImplicit(ruleName) || !this.hasRule(attribute, 'nullable')) {
       return true;
