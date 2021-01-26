@@ -1,5 +1,5 @@
 import { isString, isArray, isDate, isBoolean, isNull, isNumeric } from './types-checker';
-import utils from './utils';
+import { RegexUtils, ValuesUtils } from './utils';
 
 const IMPLICIT_RULES = [
   'required',
@@ -27,15 +27,15 @@ type ValidationValue =
   | Array<ValidationValue>
   | Set<ValidationValue>;
 
-const alpha = (attribute: string, value: ValidationValue): boolean => isString(value) && utils.regex.alpha.test(value);
+const alpha = (attribute: string, value: ValidationValue): boolean => isString(value) && RegexUtils.alpha.test(value);
 
 const alphaNumeric = (attribute: string, value: ValidationValue): boolean =>
-  isString(value) && utils.regex.alphaNumeric.test(value);
+  isString(value) && RegexUtils.alphaNumeric.test(value);
 
 const array = (attribute: string, value: ValidationValue): boolean => isArray(value);
 
 const between = (attribute: string, value: ValidationValue, params: Array<string>): boolean => {
-  const size = utils.values.getSize(value);
+  const size = ValuesUtils.getSize(value);
 
   return Number(params[0]) <= size && Number(params[1]) >= size;
 };
@@ -44,9 +44,9 @@ const boolean = (attribute: string, value: ValidationValue): boolean =>
   isBoolean(value) || [0, 1, 'false', 'true'].includes(value as string | number);
 
 const date = (attribute: string, value: ValidationValue): boolean =>
-  (isDate(value) && !isNaN(value.getSeconds())) || (isString(value) && utils.regex.date.test(value));
+  (isDate(value) && !isNaN(value.getSeconds())) || (isString(value) && RegexUtils.date.test(value));
 
-const email = (attribute: string, value: ValidationValue): boolean => isString(value) && utils.regex.email.test(value);
+const email = (attribute: string, value: ValidationValue): boolean => isString(value) && RegexUtils.email.test(value);
 
 const inArray = (attribute: string, value: ValidationValue, params: Array<string>): boolean =>
   params.includes(isNumeric(value) ? value.toString() : (value as string));
@@ -54,21 +54,21 @@ const inArray = (attribute: string, value: ValidationValue, params: Array<string
 const numeric = (attribute: string, value: ValidationValue): boolean => isNumeric(value);
 
 const max = (attribute: string, value: ValidationValue, params: Array<string>): boolean =>
-  utils.values.getSize(value) <= Number(params[0]);
+  ValuesUtils.getSize(value) <= Number(params[0]);
 
 const min = (attribute: string, value: ValidationValue, params: Array<string>): boolean =>
-  utils.values.getSize(value) >= Number(params[0]);
+  ValuesUtils.getSize(value) >= Number(params[0]);
 
 const notInArray = (attribute: string, value: ValidationValue, params: Array<string>): boolean =>
   !inArray(attribute, value, params);
 
 const required = (attribute: string, value: ValidationValue): boolean =>
   !isNull(value) &&
-  !(isString(value) && utils.values.getSize(value.trim()) === 0) &&
-  !(isArray(value) && utils.values.getSize(value) === 0);
+  !(isString(value) && ValuesUtils.getSize(value.trim()) === 0) &&
+  !(isArray(value) && ValuesUtils.getSize(value) === 0);
 
 const size = (attribute: string, value: ValidationValue, params: Array<string>): boolean =>
-  utils.values.getSize(value) === Number(params[0]);
+  ValuesUtils.getSize(value) === Number(params[0]);
 
 const string = (attribute: string, value: ValidationValue): boolean => isString(value);
 
