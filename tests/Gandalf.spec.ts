@@ -171,7 +171,7 @@ describe('Test validate function', () => {
 
   it('should check if existing rule exists', () => {
     const gandalf = new Gandalf({
-      spellName: 'Expeliarmus',
+      spellName: 'Expelliarmus',
     }, {
       spellName: 'required|alpha',
     });
@@ -181,7 +181,7 @@ describe('Test validate function', () => {
 
   it('should check if non-existing rule exists', () => {
     const gandalf = new Gandalf({
-      spellName: 'Expeliarmus',
+      spellName: 'Expelliarmus',
     }, {});
 
     expect(gandalf.hasRule('spellName', 'alpha')).to.be.false;
