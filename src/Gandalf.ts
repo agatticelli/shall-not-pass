@@ -2,7 +2,7 @@ import { MessageParser, RuleMessage } from './MessageParser';
 import { RuleManager, IMPLICIT_RULES, RuleCallback } from './RuleManager';
 import * as typesChecker from './types-checker';
 import { ObjectUtils } from './utils';
-import { ObjectLiteral } from "./types";
+import { ObjectLiteral } from './types';
 
 export type GandalfOptions = {
   language?: string;
@@ -65,7 +65,6 @@ class Gandalf {
 
       await Promise.all(
         rulesFoundEntries.map(async ([ruleName, extra]) => {
-
           // check if ruleName should be validated for this attribute
           const isValidatable = this.isValidatable(ruleName, attribute);
 

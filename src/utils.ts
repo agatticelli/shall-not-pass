@@ -1,6 +1,6 @@
 import { isNumeric, isArray, isString } from './types-checker';
 import { ValidationValue } from './RuleManager';
-import { ObjectLiteral } from "./types";
+import { ObjectLiteral } from './types';
 
 const getSize = (value: ValidationValue): number => {
   if (isNumeric(value)) {
@@ -20,7 +20,7 @@ const snakeToCamel = (str: string): string => {
 
 const _splitNestedKeys = (keyPath: string): string[] => {
   // splits by dot (.) except for those who are preceded by "\\". Then replaces "\\." with "."
-  return keyPath.split(/(?<!\\)\./).map(k => k.replace(/\\./, "."));
+  return keyPath.split(/(?<!\\)\./).map(k => k.replace(/\\./, '.'));
 };
 
 const _reduceNestedPath = (obj: ObjectLiteral, path: string[]): any => {
@@ -28,8 +28,8 @@ const _reduceNestedPath = (obj: ObjectLiteral, path: string[]): any => {
 };
 
 const getValue = (obj: ObjectLiteral, keyPath: string): any => {
-  return _reduceNestedPath(obj, _splitNestedKeys(keyPath))
-}
+  return _reduceNestedPath(obj, _splitNestedKeys(keyPath));
+};
 
 const keyExists = (obj: ObjectLiteral, keyPath: string): boolean => {
   const path = _splitNestedKeys(keyPath);
@@ -37,10 +37,10 @@ const keyExists = (obj: ObjectLiteral, keyPath: string): boolean => {
   if (!finalKey) {
     return false;
   }
-  const result = _reduceNestedPath(obj, path) ?? {}
+  const result = _reduceNestedPath(obj, path) ?? {};
 
   return finalKey in result;
-}
+};
 
 const alpha = /^[a-zA-Z]*$/;
 const alphaNumeric = /^[a-zA-Z0-9]*$/;
@@ -53,9 +53,4 @@ const StringUtils = { snakeToCamel };
 const ObjectUtils = { getValue, keyExists };
 const RegexUtils = { alpha, alphaNumeric, date, email, numeric };
 
-export {
-  ValuesUtils,
-  StringUtils,
-  ObjectUtils,
-  RegexUtils,
-};
+export { ValuesUtils, StringUtils, ObjectUtils, RegexUtils };
