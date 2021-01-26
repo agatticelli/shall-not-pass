@@ -1,6 +1,7 @@
 import { MessageParser, RuleMessage } from './MessageParser';
 import { RuleManager, IMPLICIT_RULES, RuleCallback } from './RuleManager';
 import * as typesChecker from './types-checker';
+import { ObjectUtils } from './utils';
 
 export type ObjectLiteral = {
   [key: string]: any;
@@ -117,7 +118,7 @@ class Gandalf {
 
   // validatePresent returns true if attribute is present inside data
   validatePresent(attribute: string): boolean {
-    return attribute in this.data;
+    return ObjectUtils.keyExists(this.data, attribute);
   }
 
   // isNotNullIfMarkedAsNullable checks that rule is not implicit and more important if this attribute has a nullable
@@ -127,7 +128,7 @@ class Gandalf {
       return true;
     }
 
-    return !typesChecker.isNull(this.data[attribute]);
+    return !typesChecker.isNull(ObjectUtils.getValue(this.data, attribute));
   }
 
   parseRules(): void {
